@@ -13,6 +13,12 @@ export default class DependencyProvider {
   private deps = new Map<any, Dependency<any>>()
   private cache = new Map<any, any | Promise<any>>()
 
+  public static create(init: (deps: DependencyProvider) => void = () => {}, options: DependencyProviderOptions = {}) {
+    const deps = new DependencyProvider(options)
+    init(deps)
+    return deps
+  }
+
   public provide<Ctor extends Constructor<any>>(key: Ctor, dep: Dependency<InstanceType<Ctor>>): void
   public provide<T, K>(key: K, dep: Dependency<T>): void
   public provide<T, K>(key: K, dep: Dependency<T>) {
