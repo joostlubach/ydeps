@@ -43,6 +43,10 @@ export default class DependencyProvider {
     return Promise.resolve(this._get(key))
   }
 
+  public used(key: any) {
+    return this.cache.has(key)
+  }
+
   private _get<T>(key: any): T | Promise<T> {
     const cached = this.cache.get(key)
     if (cached != null) { return cached }
