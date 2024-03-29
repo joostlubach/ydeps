@@ -1,2 +1,2 @@
-export { default as DependencyProvider } from './DependencyProvider'
-export * from './types'
+export { default as DependencyProvider } from './DependencyProvider.js'
+export * from './types.js'
