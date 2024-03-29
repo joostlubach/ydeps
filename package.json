@@ -1,7 +1,6 @@
 {
   "name": "ydeps",
   "version": "0.0.1",
-  "type": "module",
   "description": "General purpose type-safe dependency injection system.",
   "private": true,
   "author": "Joost Lubach <joostlubach@gmail.com>",

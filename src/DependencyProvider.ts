@@ -1,8 +1,8 @@
 import { isFunction } from 'lodash'
 import { Constructor, isPromise } from 'ytil'
 
-import { AsyncDependencyError, DependencyNotFoundError } from './errors.js'
-import { Dependency, DependencyProviderOptions } from './types.js'
+import { AsyncDependencyError, DependencyNotFoundError } from './errors'
+import { Dependency, DependencyProviderOptions } from './types'
 
 export default class DependencyProvider {
 

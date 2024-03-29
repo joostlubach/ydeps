@@ -1,4 +1,4 @@
-import DependencyProvider from './DependencyProvider.js'
+import DependencyProvider from './DependencyProvider'
 
 export interface DependencyProviderOptions {
   upstream?: DependencyProvider
