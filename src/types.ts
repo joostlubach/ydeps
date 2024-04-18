@@ -1,7 +1,7 @@
-import DependencyProvider from './DependencyProvider'
+import DependencyContainer from './DependencyContainer'
 
-export interface DependencyProviderOptions {
-  upstream?: DependencyProvider
+export interface DependencyContainerOptions {
+  upstream?: DependencyContainer
   fallback?: DependencyFallback
 }
 

@@ -1,2 +1,2 @@
-export { default as DependencyProvider } from './DependencyProvider'
+export { default as DependencyContainer } from './DependencyContainer'
 export * from './types'

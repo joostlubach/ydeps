@@ -2,19 +2,19 @@ import { isFunction } from 'lodash'
 import { Constructor, isPromise } from 'ytil'
 
 import { AsyncDependencyError, DependencyNotFoundError } from './errors'
-import { Dependency, DependencyProviderOptions } from './types'
+import { Dependency, DependencyContainerOptions } from './types'
 
-export default class DependencyProvider {
+export default class DependencyContainer {
 
   constructor(
-    private readonly options: DependencyProviderOptions = {},
+    private readonly options: DependencyContainerOptions = {},
   ) {}
 
   private deps = new Map<any, Dependency<any>>()
   private cache = new Map<any, any | Promise<any>>()
 
-  public static create(init: (deps: DependencyProvider) => void = () => {}, options: DependencyProviderOptions = {}) {
-    const deps = new DependencyProvider(options)
+  public static create(init: (deps: DependencyContainer) => void = () => {}, options: DependencyContainerOptions = {}) {
+    const deps = new DependencyContainer(options)
     init(deps)
     return deps
   }
@@ -86,5 +86,5 @@ export default class DependencyProvider {
 }
 
 type RestArgsOf<Ctor extends Constructor<any>> =
-  Ctor extends new (deps: DependencyProvider, ...args: infer A) => any
+  Ctor extends new (deps: DependencyContainer, ...args: infer A) => any
     ? A : never
