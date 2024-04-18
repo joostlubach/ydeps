@@ -37,6 +37,10 @@ export default class DependencyProvider {
     return value
   }
 
+  public create<Ctor extends Constructor<any>>(Ctor: Ctor, ...args: RestArgsOf<Ctor>): InstanceType<Ctor> {
+    return new Ctor(this, ...args)
+  }
+
   public async getAsync<Ctor extends Constructor<any>>(key: Ctor): Promise<InstanceType<Ctor>>
   public async getAsync<T>(key: any): Promise<T>
   public async getAsync(key: any) {
@@ -80,3 +84,7 @@ export default class DependencyProvider {
   }
 
 }
+
+type RestArgsOf<Ctor extends Constructor<any>> =
+  Ctor extends new (deps: DependencyProvider, ...args: infer A) => any
+    ? A : never
