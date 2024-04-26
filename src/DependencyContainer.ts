@@ -51,6 +51,10 @@ export default class DependencyContainer {
     return this.cache.has(key)
   }
 
+  public allUsed() {
+    return Array.from(this.cache.values())
+  }
+
   private _get<T>(key: any): T | Promise<T> {
     const cached = this.cache.get(key)
     if (cached != null) { return cached }
