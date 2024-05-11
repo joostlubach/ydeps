@@ -25,6 +25,7 @@
     "test": "NODE_ENV=test jest"
   },
   "devDependencies": {
+    "@types/lodash": "^4.17.0",
     "copyfiles": "^2.4.1",
     "rimraf": "^5.0.5",
     "ts-jest": "^29.1.2",
@@ -32,6 +33,7 @@
     "typescript": "5.4.3"
   },
   "dependencies": {
+    "lodash": "^4.17.21",
     "ytil": "workspace:^"
   }
 }
