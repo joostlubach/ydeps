@@ -6,4 +6,4 @@ export interface DependencyContainerOptions {
 }
 
 export type DependencyFallback = (key: any) => any | undefined
-export type Dependency<T> = () => T | Promise<T>
+export type Dependency<T> = (deps: DependencyContainer) => T | Promise<T>

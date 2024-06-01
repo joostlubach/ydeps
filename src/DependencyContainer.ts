@@ -62,7 +62,7 @@ export default class DependencyContainer {
     // Try to see if we have the dependency.
     const dep = this.deps.get(key)
     if (dep != null) {
-      return this._cacheAndReturn(key, dep())
+      return this._cacheAndReturn(key, dep(this))
     }
 
     // Otherwise, try the fallback.
