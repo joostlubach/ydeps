@@ -10,8 +10,19 @@ export default class DependencyContainer {
     private readonly options: DependencyContainerOptions = {},
   ) {}
 
+  public disposeAll() {
+    for (const instance of this.allUsed()) {
+      if ('dispose' in instance && isFunction(instance.dispose)) {
+        instance.dispose()
+      }
+    }
+    this.keyedCache.clear()
+    this.unkeyedCache.clear()
+  }
+
   private deps = new Map<any, Dependency<any>>()
-  private cache = new Map<any, any | Promise<any>>()
+  private keyedCache = new Map<any, any>()
+  private unkeyedCache = new Set<any>()
 
   public static create(init: (deps: DependencyContainer) => void = () => {}, options: DependencyContainerOptions = {}) {
     const deps = new DependencyContainer(options)
@@ -41,6 +52,19 @@ export default class DependencyContainer {
     return new Ctor(this, ...args)
   }
 
+  public async using<Ctor extends Constructor<any, []>, T>(Ctor: Ctor, fn: (instance: InstanceType<Ctor>) => T | Promise<T>): Promise<T>
+  public async using<Ctor extends Constructor<any>, T>(Ctor: Ctor, args: RestArgsOf<Ctor>, fn: (instance: InstanceType<Ctor>) => T | Promise<T>): Promise<T>
+  public async using<Ctor extends Constructor<any>, T>(Ctor: Ctor, ...args: any[]): Promise<T> {
+    const fn = args.pop()
+    const instance = this.create(Ctor, ...args as any)
+
+    const retval = await fn(instance)
+    if ('dispose' in instance && isFunction(instance.dispose)) {
+      await instance.dispose()
+    }
+    return retval
+  }
+
   public async getAsync<Ctor extends Constructor<any>>(key: Ctor): Promise<InstanceType<Ctor>>
   public async getAsync<T>(key: any): Promise<T>
   public async getAsync(key: any) {
@@ -48,15 +72,18 @@ export default class DependencyContainer {
   }
 
   public used(key: any) {
-    return this.cache.has(key)
+    return this.keyedCache.has(key)
   }
 
   public allUsed() {
-    return Array.from(this.cache.values())
+    return [
+      ...this.keyedCache.values(),
+      ...this.unkeyedCache.values(),
+    ]
   }
 
   private _get<T>(key: any): T | Promise<T> {
-    const cached = this.cache.get(key)
+    const cached = this.keyedCache.get(key)
     if (cached != null) { return cached }
 
     // Try to see if we have the dependency.
@@ -66,7 +93,7 @@ export default class DependencyContainer {
     }
 
     // Otherwise, try the fallback.
-    const fallback = this.options.fallback?.(key)
+    const fallback = this.options.fallback?.(this, key)
     if (fallback != null) {
       return this._cacheAndReturn(key, fallback)
     }
@@ -83,7 +110,7 @@ export default class DependencyContainer {
   }
 
   private _cacheAndReturn<T>(key: any, value: T | Promise<T>): T | Promise<T> {
-    this.cache.set(key, value)
+    this.keyedCache.set(key, value)
     return value
   }
 
