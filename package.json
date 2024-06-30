@@ -4,15 +4,9 @@
   "description": "General purpose type-safe dependency injection system.",
   "private": true,
   "author": "Joost Lubach <joostlubach@gmail.com>",
-  "main": "./dist/cjs/index.js",
-  "module": "./dist/esm/index.js",
-  "types": "./dist/types/index.d.ts",
+  "main": "./src/index.ts",
   "exports": {
-    ".": {
-      "types": "./dist/types/index.d.ts",
-      "import": "./dist/esm/index.js",
-      "default": "./dist/cjs/index.js"
-    }
+    ".": "./src/index.ts"
   },
   "scripts": {
     "build": "pnpm clean && pnpm build:tsc",
@@ -34,6 +28,6 @@
   },
   "dependencies": {
     "lodash": "^4.17.21",
-    "ytil": "workspace:^"
+    "ytil": "workspace:*"
   }
 }
