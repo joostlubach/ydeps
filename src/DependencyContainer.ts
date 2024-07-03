@@ -1,5 +1,4 @@
-import { isFunction } from 'lodash'
-import { Constructor, isPromise } from 'ytil'
+import { Constructor, isFunction, isPromise } from 'ytil'
 
 import { AsyncDependencyError, DependencyNotFoundError } from './errors'
 import { Dependency, DependencyContainerOptions } from './types'
