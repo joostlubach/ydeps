@@ -1,4 +1,4 @@
-import { Constructor, isFunction, isPromise } from 'ytil'
+import { Constructor, hasFunction, isFunction, isPromise } from 'ytil'
 
 import { AsyncDependencyError, DependencyNotFoundError } from './errors'
 import { Dependency, DependencyContainerOptions } from './types'
@@ -11,7 +11,7 @@ export default class DependencyContainer {
 
   public disposeAll() {
     for (const instance of this.allUsed()) {
-      if ('dispose' in instance && isFunction(instance.dispose)) {
+      if (hasFunction(instance, 'dispose')) {
         instance.dispose()
       }
     }
@@ -58,7 +58,7 @@ export default class DependencyContainer {
     const instance = this.create(Ctor, ...args as any)
 
     const retval = await fn(instance)
-    if ('dispose' in instance && isFunction(instance.dispose)) {
+    if (hasFunction(instance, 'dispose')) {
       await instance.dispose()
     }
     return retval
