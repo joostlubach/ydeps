@@ -9,15 +9,10 @@
     ".": "./src/index.ts"
   },
   "scripts": {
-    "build": "pnpm clean && pnpm build:tsc",
-    "build:tsc": "pnpm build:tsc:esm && pnpm build:tsc:cjs",
-    "build:tsc:esm": "tsc -p tsconfig.prod.json --module esnext --outDir dist/esm --declarationDir dist/types",
-    "build:tsc:cjs": "tsc -p tsconfig.prod.json --module commonjs --outDir dist/cjs --declaration false --declarationMap false",
-    "clean": "rimraf dist tsconfig.tsbuildinfo",
-    "lint": "eslint src --ext ts,tsx",
     "check": "tsc -p . --noEmit",
-    "test": "NODE_ENV=test jest"
-  },
+    "lint": "eslint src --ext ts,tsx",
+    "test": "NODE_ENV=test DATA_ENV=test jest"
+},
   "devDependencies": {
     "@types/lodash": "^4.17.0",
     "copyfiles": "^2.4.1",
