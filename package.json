@@ -1,0 +1,28 @@
+{
+  "name": "ydeps",
+  "version": "0.0.1",
+  "description": "General purpose type-safe dependency injection system.",
+  "private": true,
+  "author": "Joost Lubach <joostlubach@gmail.com>",
+  "main": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "check": "tsc -p . --noEmit",
+    "lint": "eslint src --ext ts,tsx",
+    "test": "NODE_ENV=test DATA_ENV=test jest"
+},
+  "devDependencies": {
+    "@types/lodash": "^4.17.0",
+    "copyfiles": "^2.4.1",
+    "rimraf": "^5.0.5",
+    "ts-jest": "^29.1.2",
+    "tsc-alias": "^1.8.8",
+    "typescript": "5.4.3"
+  },
+  "dependencies": {
+    "lodash": "^4.17.21",
+    "ytil": "workspace:*"
+  }
+}
