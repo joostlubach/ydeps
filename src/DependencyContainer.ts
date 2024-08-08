@@ -1,5 +1,4 @@
 import { Constructor, hasFunction, isFunction, isPromise } from 'ytil'
-
 import { AsyncDependencyError, DependencyNotFoundError } from './errors'
 import { Dependency, DependencyContainerOptions } from './types'
 
@@ -104,7 +103,7 @@ export default class DependencyContainer {
     }
 
     // Finally, we cannot obtain the dependency.
-    const name = isFunction(key) ? key.name : key
+    const name = 'name' in key && typeof key.name === 'string' ? key.name : key
     throw new DependencyNotFoundError(`Dependency '${name}' not provided`)
   }
 
