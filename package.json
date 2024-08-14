@@ -15,10 +15,7 @@
 },
   "devDependencies": {
     "@types/lodash": "^4.17.0",
-    "copyfiles": "^2.4.1",
-    "rimraf": "^5.0.5",
     "ts-jest": "^29.1.2",
-    "tsc-alias": "^1.8.8",
     "typescript": "5.4.3"
   },
   "dependencies": {
