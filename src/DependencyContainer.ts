@@ -1,4 +1,5 @@
 import { Constructor, hasFunction, isFunction, isPromise } from 'ytil'
+
 import { AsyncDependencyError, DependencyNotFoundError } from './errors'
 import { Dependency, DependencyContainerOptions } from './types'
 
@@ -32,6 +33,10 @@ export default class DependencyContainer {
   public provide<T, K>(key: K, dep: Dependency<T>): void
   public provide<T, K>(key: K, dep: Dependency<T>) {
     this.deps.set(key, dep)
+  }
+
+  public has(key: any) {
+    return this.deps.has(key)
   }
 
   public get<Ctor extends Constructor<any>>(key: Ctor): InstanceType<Ctor>
