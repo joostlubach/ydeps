@@ -109,7 +109,9 @@ export default class DependencyContainer {
 
     // Finally, we cannot obtain the dependency.
     const name = 'name' in key && typeof key.name === 'string' ? key.name : key
-    throw new DependencyNotFoundError(`Dependency '${name}' not provided`)
+    const error = new DependencyNotFoundError(`Dependency '${name}' not provided`)
+    Error.captureStackTrace(error, this.get)
+    throw error
   }
 
   private _cacheAndReturn<T>(key: any, value: T | Promise<T>): T | Promise<T> {
