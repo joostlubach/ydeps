@@ -42,7 +42,7 @@ export default class DependencyContainer {
   public get<Ctor extends Constructor<any>>(key: Ctor): InstanceType<Ctor>
   public get<T>(key: any): T
   public get(key: any) {
-    const value = this._get(key)
+    const value = this.getSyncOrAsync(key)
     if (isPromise(value)) {
       const name = isFunction(key) ? key.name : key
       throw new AsyncDependencyError(`Dependency '${name}' is async, use getAsync instead`)
@@ -71,7 +71,7 @@ export default class DependencyContainer {
   public async getAsync<Ctor extends Constructor<any>>(key: Ctor): Promise<InstanceType<Ctor>>
   public async getAsync<T>(key: any): Promise<T>
   public async getAsync(key: any) {
-    return Promise.resolve(this._get(key))
+    return Promise.resolve(this.getSyncOrAsync(key))
   }
 
   public used(key: any) {
@@ -85,7 +85,7 @@ export default class DependencyContainer {
     ]
   }
 
-  private _get<T>(key: any): T | Promise<T> {
+  public getSyncOrAsync<T>(key: any): T | Promise<T> {
     const cached = this.keyedCache.get(key)
     if (cached != null) { return cached }
 
@@ -104,7 +104,7 @@ export default class DependencyContainer {
     // If this provider cannot obtain the dependency, try the upstream provider.
     // In this case, we expect the upstream provider to manage caching.
     if (this.options.upstream != null) {
-      return this.options.upstream._get(key)
+      return this.options.upstream.getSyncOrAsync(key)
     }
 
     // Finally, we cannot obtain the dependency.
