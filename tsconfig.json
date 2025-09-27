@@ -1,21 +1,27 @@
 {
   "compilerOptions": {
     "target": "ESNext",
-    "outDir": "dist","sourceMap": true,
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "isolatedModules": true,
+
+    "rootDir": "src",
+    "outDir": "dist",
+
+    "lib": ["ESNext"],
+    "types": ["bun-types"],
+
     "declaration": true,
+    "sourceMap": true,
     "declarationMap": true,
-    "useDefineForClassFields": true,
+    
+    "strict": true,
     "allowJs": false,
     "skipLibCheck": true,
     "esModuleInterop": true,
+    "useDefineForClassFields": true,
     "allowSyntheticDefaultImports": true,
-    "strict": true,
     "forceConsistentCasingInFileNames": true,
-    "module": "ESNext",
-    "moduleResolution": "Node10",
-    "resolveJsonModule": true,
-    "isolatedModules": true,
-    "rootDir": "src"
   },
   "include": [
     "src"
