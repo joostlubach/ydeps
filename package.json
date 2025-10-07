@@ -21,7 +21,7 @@
     "clean": "rimraf dist",
     "check": "tsc -p . --noEmit",
     "lint": "eslint src --ext ts,tsx",
-    "test": "NODE_ENV=test DATA_ENV=test jest"
+    "test": "NODE_ENV=test jest"
   },
   "devDependencies": {
     "@types/jest": "^30.0.0",
