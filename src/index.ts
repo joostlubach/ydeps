@@ -1,2 +1,2 @@
-export { Deps } from './Deps'
+export { default as DependencyContainer } from './DependencyContainer'
 export * from './types'
