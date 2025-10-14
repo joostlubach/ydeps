@@ -1,12 +1,14 @@
+import { AsyncLocalStorage } from 'async_hooks'
 import { Constructor, hasFunction, isFunction, isPromise } from 'ytil'
-
 import { AsyncDependencyError, DependencyNotFoundError } from './errors'
-import { Dependency, DependencyContainerOptions } from './types'
+import { Dependency, DepsOptions } from './types'
 
-export default class DependencyContainer {
+export class Deps {
 
-  constructor(
-    private readonly options: DependencyContainerOptions = {},
+  // #region Lifecycle
+
+  private constructor(
+    private readonly options: DepsOptions = {},
   ) {}
 
   public disposeAll() {
@@ -23,11 +25,41 @@ export default class DependencyContainer {
   private keyedCache = new Map<any, any>()
   private unkeyedCache = new Set<any>()
 
-  public static create(init: (deps: DependencyContainer) => void = () => {}, options: DependencyContainerOptions = {}) {
-    const deps = new DependencyContainer(options)
+  public static create(init: (deps: Deps) => void = () => {}, options: DepsOptions = {}) {
+    const deps = new Deps(options)
     init(deps)
     return deps
   }
+
+  // #endregion
+
+  // #region Async singleton
+
+  public static child(options: Omit<DepsOptions, 'upstream'> = {}) {
+    return new Deps({
+      ...options,
+      upstream: Deps.current(),
+    })
+  }
+
+  public static current() {
+    return context.getStore() ?? new Deps()
+  }
+
+  // #region Factory
+
+  // #endregion
+  
+  // #region Run
+
+  public run<R>(callback: (deps: Deps) => R): R {
+    return context.run(this, () => callback(this))
+  }
+
+  // #endregion
+
+
+  // #endregion
 
   public provide<Ctor extends Constructor<any>>(key: Ctor, dep: Dependency<InstanceType<Ctor>>): void
   public provide<T, K>(key: K, dep: Dependency<T>): void
@@ -121,6 +153,8 @@ export default class DependencyContainer {
 
 }
 
+const context = new AsyncLocalStorage<Deps>()
+
 type RestArgsOf<Ctor extends Constructor<any>> =
-  Ctor extends new (deps: DependencyContainer, ...args: infer A) => any
+  Ctor extends new (deps: Deps, ...args: infer A) => any
     ? A : never

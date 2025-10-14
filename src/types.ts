@@ -1,9 +1,9 @@
-import DependencyContainer from './DependencyContainer'
+import { Deps } from './Deps'
 
-export interface DependencyContainerOptions {
-  upstream?: DependencyContainer
+export interface DepsOptions {
+  upstream?: Deps
   fallback?: DependencyFallback
 }
 
-export type DependencyFallback = (deps: DependencyContainer, key: any) => any | undefined
-export type Dependency<T> = (deps: DependencyContainer) => T | Promise<T>
+export type DependencyFallback = (deps: Deps, key: any) => any | undefined
+export type Dependency<T> = (deps: Deps) => T | Promise<T>
