@@ -33,7 +33,6 @@
   "dependencies": {
     "jest": "^30.2.0",
     "lodash": "^4.17.21",
-    "ytil": "workspace:*",
-    "zodenv": "workspace:*"
+    "ytil": "workspace:^"
   }
 }
