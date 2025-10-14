@@ -1,5 +1,6 @@
 import { AsyncLocalStorage } from 'async_hooks'
-import { Constructor, hasFunction, isFunction, isPromise } from 'ytil'
+import { AbstractConstructor, Constructor, hasFunction, isFunction, isPromise } from 'ytil'
+
 import { AsyncDependencyError, DependencyNotFoundError } from './errors'
 import { Dependency, DepsOptions } from './types'
 
@@ -7,7 +8,7 @@ export class Deps {
 
   // #region Lifecycle
 
-  private constructor(
+  constructor(
     private readonly options: DepsOptions = {},
   ) {}
 
@@ -71,7 +72,7 @@ export class Deps {
     return this.deps.has(key)
   }
 
-  public get<Ctor extends Constructor<any>>(key: Ctor): InstanceType<Ctor>
+  public get<Ctor extends Constructor<any> | AbstractConstructor<any>>(key: Ctor): InstanceType<Ctor>
   public get<T>(key: any): T
   public get(key: any) {
     const value = this.getSyncOrAsync(key)
@@ -155,6 +156,7 @@ export class Deps {
 
 const context = new AsyncLocalStorage<Deps>()
 
-type RestArgsOf<Ctor extends Constructor<any>> =
-  Ctor extends new (deps: Deps, ...args: infer A) => any
-    ? A : never
+type RestArgsOf<Ctor extends Constructor<any> | AbstractConstructor<any>> =
+  Ctor extends new (deps: Deps, ...args: infer A) => any ? A :
+  Ctor extends abstract new (deps: Deps, ...args: infer A) => any ? A :
+  never
