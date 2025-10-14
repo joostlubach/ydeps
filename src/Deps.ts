@@ -1,6 +1,4 @@
-import { AsyncLocalStorage } from 'async_hooks'
 import { AbstractConstructor, Constructor, hasFunction, isFunction, isPromise } from 'ytil'
-
 import { AsyncDependencyError, DependencyNotFoundError } from './errors'
 import { Dependency, DepsOptions } from './types'
 
@@ -31,34 +29,6 @@ export class Deps {
     init(deps)
     return deps
   }
-
-  // #endregion
-
-  // #region Async singleton
-
-  public static child(options: Omit<DepsOptions, 'upstream'> = {}) {
-    return new Deps({
-      ...options,
-      upstream: Deps.current(),
-    })
-  }
-
-  public static current() {
-    return context.getStore() ?? new Deps()
-  }
-
-  // #region Factory
-
-  // #endregion
-  
-  // #region Run
-
-  public run<R>(callback: (deps: Deps) => R): R {
-    return context.run(this, () => callback(this))
-  }
-
-  // #endregion
-
 
   // #endregion
 
@@ -153,8 +123,6 @@ export class Deps {
   }
 
 }
-
-const context = new AsyncLocalStorage<Deps>()
 
 type RestArgsOf<Ctor extends Constructor<any> | AbstractConstructor<any>> =
   Ctor extends new (deps: Deps, ...args: infer A) => any ? A :
