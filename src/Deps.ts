@@ -62,10 +62,11 @@ export class Deps {
 
   // #endregion
 
-  public provide<Ctor extends Constructor<any>>(key: Ctor, dep: Dependency<InstanceType<Ctor>>): void
-  public provide<T, K>(key: K, dep: Dependency<T>): void
+  public provide<Ctor extends Constructor<any>>(key: Ctor, dep: Dependency<InstanceType<Ctor>>): this
+  public provide<T, K>(key: K, dep: Dependency<T>): this
   public provide<T, K>(key: K, dep: Dependency<T>) {
     this.deps.set(key, dep)
+    return this
   }
 
   public has(key: any) {
