@@ -1,5 +1,5 @@
 import { AsyncLocalStorage } from 'async_hooks'
-import { AbstractConstructor, Constructor, hasFunction, isFunction, isPromise } from 'ytil'
+import { AbstractConstructor, Constructor, hasMethod, isFunction, isPromise } from 'ytil'
 
 import { AsyncDependencyError, DependencyNotFoundError } from './errors'
 import { Dependency, DepsOptions } from './types'
@@ -14,7 +14,7 @@ export class Deps {
 
   public disposeAll() {
     for (const instance of this.allUsed()) {
-      if (hasFunction(instance, 'dispose')) {
+      if (hasMethod(instance, 'dispose')) {
         instance.dispose()
       }
     }
@@ -96,7 +96,7 @@ export class Deps {
     const instance = this.create(Ctor, ...args as any)
 
     const retval = await fn(instance)
-    if (hasFunction(instance, 'dispose')) {
+    if (hasMethod(instance, 'dispose')) {
       await instance.dispose()
     }
     return retval
