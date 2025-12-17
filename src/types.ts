@@ -5,5 +5,5 @@ export interface DepsOptions {
   fallback?: DependencyFallback
 }
 
-export type DependencyFallback = (deps: Deps, key: any) => any | undefined
+export type DependencyFallback = (deps: Deps, key: any) => void | undefined
 export type Dependency<T> = (deps: Deps) => T | Promise<T>

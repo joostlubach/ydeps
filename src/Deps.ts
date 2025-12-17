@@ -125,6 +125,6 @@ export class Deps {
 }
 
 type RestArgsOf<Ctor extends Constructor<any> | AbstractConstructor<any>> =
-  Ctor extends new (deps: Deps, ...args: infer A) => any ? A :
-    Ctor extends abstract new (deps: Deps, ...args: infer A) => any ? A :
+  Ctor extends new (deps: Deps, ...args: infer A) => void ? A :
+    Ctor extends abstract new (deps: Deps, ...args: infer A) => void ? A :
       never
