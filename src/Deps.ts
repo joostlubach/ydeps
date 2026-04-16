@@ -1,6 +1,5 @@
 import { AsyncLocalStorage } from 'async_hooks'
 import { AbstractConstructor, Constructor, hasMethod, isFunction, isPromise } from 'ytil'
-
 import { AsyncDependencyError, DependencyNotFoundError } from './errors'
 import { Dependency, DepsOptions } from './types'
 
@@ -119,6 +118,8 @@ export class Deps {
     ]
   }
 
+  private inFallback: boolean = false
+
   public getSyncOrAsync<T>(key: any): T | Promise<T> {
     const cached = this.keyedCache.get(key)
     if (cached != null) { return cached }
@@ -130,7 +131,16 @@ export class Deps {
     }
 
     // Otherwise, try the fallback.
+    if (this.inFallback) {
+      const name = typeof key === 'string' ? key : 'name' in key && typeof key.name === 'string' ? key.name : key
+      const error = new DependencyNotFoundError(`Dependency '${name}' not provided (circular dependency?)`)
+      Error.captureStackTrace(error, this.getSyncOrAsync) 
+      throw error
+    }
+
+    this.inFallback = true
     const fallback = this.options.fallback?.(this, key)
+    this.inFallback = false
     if (fallback != null) {
       return this._cacheAndReturn(key, fallback)
     }
