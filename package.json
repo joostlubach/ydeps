@@ -1,5 +1,5 @@
 {
-  "name": "ydeps",
+  "name": "@mosdev/ydeps",
   "version": "0.0.1",
   "description": "General purpose type-safe dependency injection system.",
   "private": true,
@@ -40,6 +40,6 @@
   },
   "dependencies": {
     "lodash": "^4.17.21",
-    "ytil": "workspace:*"
+    "@mosdev/ytil": "workspace:*"
   }
 }

@@ -1,4 +1,4 @@
-import { AbstractConstructor, Constructor, hasMethod, isFunction, isPromise } from 'ytil'
+import { AbstractConstructor, Constructor, hasMethod, isFunction, isPromise } from '@mosdev/ytil'
 import { AsyncDependencyError, DependencyNotFoundError } from './errors'
 import { Dependency, DepsOptions } from './types'
 
